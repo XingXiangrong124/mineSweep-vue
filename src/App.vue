@@ -8,7 +8,6 @@
 <script>
 import wordComponent from './components/word/word-component.vue';
 // import gridComponent from './components/grid/grid-component.vue';
-// import DataCom from './gloabal/gloabalData.vue'
 import { inject } from 'vue'
 
 export default {
