@@ -13,11 +13,7 @@
 </template>
 
 <script>
-// import info from '../../gloabal/gloabal_detailInfo.js';
-// import ggrid from './../grid/grid-component.vue';
 import gridComponent from './../grid/grid-component.vue';
-// import {inject} from 'vue'
-// const $mine = inject('$mine')
 export default {
     data() {
         return {
@@ -28,7 +24,6 @@ export default {
     },
     methods: {
     draw() {
-        // console.log( this.$refs.gc)
         this.$refs.gc.draw();
     },
     restart() {
@@ -36,9 +31,6 @@ export default {
     },
     level(l) {
     let SW = document.body.clientWidth;
-    // let game = document.getElementsByClassName("game");
-    // let cell = document.getElementsByClassName("cell");
-    // let grid = document.getElementById("grid");
     
     if (l === 1) {
         this.mine.tr = 9;
@@ -109,7 +101,7 @@ export default {
     // console.log(this.width, this.height,"w")
     this.setShape(this.mine.tr, this.mine.td)
     this.mine.init();
-    this.draw()
+    // this.draw()
     this.restart();
 },
     custom() {

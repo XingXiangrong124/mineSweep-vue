@@ -21,9 +21,6 @@
 </template>
 
 <script>
-// import this from './../../gloabal/gloabal_data.js';
-// import this from './../../gloabal/gloabal_detailInfo.js';
-// import wordComponent from './../word/word-component.vue';
 import {inject} from 'vue'
 
 export default {
@@ -78,7 +75,7 @@ export default {
         this.mine.tr = this.mineChange.tr;
         this.mine.td = this.mineChange.td;
         this.mine.mineCount = this.mineChange.mineCount;
-        console.log(this.mine.tr,this.mine.td, "1")
+        console.log(this.mine.init(), "1")
     } else {
         // this.mine.tr = 9;
         // this.mine.td = 9;
@@ -301,7 +298,7 @@ flagChange () {
             this.gfb[i].src = this.gfbb[i];
             // console.log(this.gfb[i], i)
         }
-        // this.draw();
+        console.log("finish")
     }
     }
 }

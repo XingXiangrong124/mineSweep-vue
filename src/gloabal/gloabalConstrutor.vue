@@ -32,7 +32,6 @@ Mine.prototype.randomNum = function () {
 Mine.prototype.init = function () {
     const mPosition = this.randomNum(); //雷的位置
     this.minePosition = [];
-    // this.surplusMine;
 
     let n = -1; //获取对应索引
     for (let i = 0; i < this.td; i++) {
@@ -61,7 +60,7 @@ Mine.prototype.init = function () {
         }
     }
     this.update();
-    // console.log(this.squares);
+    console.log(this.squares, "start init");
 }
 
 Mine.prototype.getAround = function (square) {
@@ -120,7 +119,7 @@ Mine.prototype.isZero = function (square) {
         }
     }
     // console.log("all",allItems);
-    console.log(this.n, "n");
+    // console.log(this.n, "n");
     return allItems;  
 }
 Mine.prototype.fixList = function (square) {
@@ -132,11 +131,8 @@ Mine.prototype.fixList = function (square) {
         this.fixWrong.push(square);
     }
 }
-Mine.prototype.surplusShow = function () {
 
-}
 document.oncontextmenu = function(){
 	return false
-	//或者 e.preventDefault()
 }
 </script>

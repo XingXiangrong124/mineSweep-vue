@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import mine from './gloabal/gloabalConstrutor.vue'
-// import picData from './gloabal/gloabalData.vue'
+
 
 
 
@@ -36,8 +36,6 @@ app.provide('gfb', ["data:img/gif;base64,R0lGODlhGQAZAKIAAM7OzsbGxr6+vra2trKysqa
 "data:img/gif;base64,R0lGODlhGQAZAJEAAL6+voKCggAAAAAAACH5BAAHAP8ALAAAAAAZABkAAAJMjI+py70Ao5wUmorxzTxuIITiSE4fiY5mEKXu2rUiHIOz9HElznY771NRcpQfrWI8TpJK2S1DtD2hPWeoRhTGojVgV1P9NsWWMBlSAAA7", 
 "data:img/gif;base64,R0lGODlhGQAZAIAAAMDAwICAgCH5BAQUAP8ALAAAAAAZABkAAAJKjI+py70Ao5wUmorxzTxu63xeMIYi8JnHlK4UwpLgOctjaUuwnqtvb/rxQsJaZXcz/k4tGsqVfPp4OCK1yih2OM7t1avJgWNjTAEAOw=="
 ])
-// app.App.provide("$mine", mine);
 
 app.config.globalProperties.$mine = mine;
-// app.config.globalProperties.$picData = picData;
 app.mount('#app');
