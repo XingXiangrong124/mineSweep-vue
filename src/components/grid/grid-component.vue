@@ -2,18 +2,18 @@
     <div>
     <!-- <wordComponent></wordComponent> -->
     <div class="table">
-        <div class="game">
+        <div class="game" ref="game">
                 <div class="title pad">
-                    <span class="mc">
-                        <canvas height="23px" id="mineCount"></canvas>
+                    <span class="mc" ref="mc">
+                        <canvas height="23px" id="mineCount" ref="mineCount"></canvas>
                     </span>
-                    <img class="facePad" id="face" src="data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AL29vQAAACH5BAAHAP8ALAAAAAAVABUAAAJAlI+py50AoUMwWCsduBy33XXAAoaiUlZY+nBq8MKUSY9HSbtzft4X/vu1MCLhcBXRoXgyBlD5AWYmgsiUis0yCgA7" alt="restart">
+                    <img class="facePad" id="face" ref="face" src="data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AL29vQAAACH5BAAHAP8ALAAAAAAVABUAAAJAlI+py50AoUMwWCsduBy33XXAAoaiUlZY+nBq8MKUSY9HSbtzft4X/vu1MCLhcBXRoXgyBlD5AWYmgsiUis0yCgA7" alt="restart">
                     <span class="tc">
-                        <canvas height="23px" width="39px" id="timeCount"></canvas>
+                        <canvas height="23px" width="39px" id="timeCount" ref="timeCount"></canvas>
                     </span>
                 </div>
-                <div class="cell pad">
-                    <canvas width="225px" height="225px" id="grid"></canvas>
+                <div class="cell pad" ref="cell">
+                    <canvas width="225px" height="225px" id="grid" ref="grid"></canvas>
                 </div>
             </div>
     </div>
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+// import { rejects } from 'assert';
+// import { resolve } from 'path';
 import {inject} from 'vue'
 
 export default {
@@ -60,11 +62,18 @@ export default {
             imageSwitch: null,
             gfb: [],
             gfd: [],
-            gfs: []
+            gfs: [],
+            isLoaded: 0,
+            imagesload: []
         }
     }, 
     // components: {
     //     // wordComponent
+    // },
+    // computed: {
+    //     together() {
+
+    //     }
     // },
     methods: {
     draw() {
@@ -75,12 +84,6 @@ export default {
         this.mine.tr = this.mineChange.tr;
         this.mine.td = this.mineChange.td;
         this.mine.mineCount = this.mineChange.mineCount;
-        console.log(this.mine.init(), "1")
-    } else {
-        // this.mine.tr = 9;
-        // this.mine.td = 9;
-        // this.mine.mineCount = 10;
-        console.log(this.mine)
     }
     
     this.mine.init()
@@ -93,7 +96,6 @@ export default {
     for (let i = 0; i < hc; i++) {
         for (let j = 0; j < wc; j++) {
             ctx_grid.drawImage(this.gfs[0], j*25, i*25);
-            console.log(this.gfs[0].src)
         }
     }
      //console.log(mineCount);
@@ -266,22 +268,45 @@ flagChange () {
             ctx_grid.drawImage(this.imageSwitch, s.x*25, s.y*25);
         }
     }
-    console.log("run!");
+    // console.log("run!");
+    },
+    onLoadImage(imgCollection) {
+        Promise.all(
+            imgCollection.map(img => {
+                return new Promise((resolve) => {
+                    img.onload = () => {
+                        this.isLoaded++;
+                        resolve();
+                    }
+            })
+        }))
     }
     },
     mounted() {
-        this.$nextTick(() => {
-            let mines = this.$mine;
+        let mines = this.$mine;
         this.mine = mines.methods.createMine(9, 9, 10);
-        console.log("start draw", this.mine)
+        // console.log("start draw", this.mine)
         this.grid = document.getElementById("grid")
         this.grid.addEventListener("click", this.timeBegin);
         this.grid.addEventListener("mousedown", this.mineDown);
         this.face = document.getElementById("face");
         this.face.addEventListener("mouseup", this.restart);
+
         this.imageSwitch = this.gfs[1];
+        console.log(this.isLoaded, "load")
+        Promise.all(
+            this.imagesload.map(img => {
+                return new Promise((resolve) => {
+                    img.onload = () => {
+                        this.isLoaded++;
+                        resolve();
+                    }
+            })
+        })).then(() => {
+            console.log(this.isLoaded)
             this.draw();
         })
+        // this.draw();
     }, 
     created() {
         if (this.gfss && this.gfbb && this.gfdd) {
@@ -289,16 +314,17 @@ flagChange () {
             this.gfs[i]=new Image();
             this.gfs[i].src = this.gfss[i];
         }
+        
         for(let i=0;i<10;i++){
             this.gfd[i]=new Image();
             this.gfd[i].src = this.gfdd[i];
         }
+        
         for(let i=0;i<9;i++){
             this.gfb[i]=new Image();
             this.gfb[i].src = this.gfbb[i];
-            // console.log(this.gfb[i], i)
         }
-        console.log("finish")
+        this.imagesload.push(...this.gfs.concat(this.gfb, this.gfd));
     }
     }
 }

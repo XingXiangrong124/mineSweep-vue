@@ -60,7 +60,6 @@ Mine.prototype.init = function () {
         }
     }
     this.update();
-    console.log(this.squares, "start init");
 }
 
 Mine.prototype.getAround = function (square) {
