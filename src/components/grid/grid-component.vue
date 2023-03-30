@@ -21,9 +21,7 @@
 </template>
 
 <script>
-// import this from './../../gloabal/gloabal_data.js';
-// import this from './../../gloabal/gloabal_detailInfo.js';
-// import wordComponent from './../word/word-component.vue';
+
 import {inject} from 'vue'
 
 export default {
