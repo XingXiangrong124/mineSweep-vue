@@ -63,7 +63,9 @@ export default {
             imageSwitch: null,
             gfb: [],
             gfd: [],
-            gfs: []
+            gfs: [],
+            imagesload: [],
+            isLoaded: 0
         }
     }, 
     // components: {
@@ -73,18 +75,12 @@ export default {
     draw() {
     // const canvas_grid = document.getElementById("grid");
     const ctx_grid = this.grid.getContext("2d");
-    console.log(ctx_grid);
+
     if (this.mineChange) {
         this.mine.tr = this.mineChange.tr;
         this.mine.td = this.mineChange.td;
         this.mine.mineCount = this.mineChange.mineCount;
-        console.log(this.mine.tr,this.mine.td, "1")
-    } else {
-        // this.mine.tr = 9;
-        // this.mine.td = 9;
-        // this.mine.mineCount = 10;
-        console.log(this.mine)
-    }
+    } 
     
     this.mine.init()
     
@@ -96,10 +92,8 @@ export default {
     for (let i = 0; i < hc; i++) {
         for (let j = 0; j < wc; j++) {
             ctx_grid.drawImage(this.gfs[0], j*25, i*25);
-            console.log(this.gfs[0].src)
         }
     }
-     //console.log(mineCount);
     
     const canvas_mineCount = document.getElementById("mineCount");
     const ctx_mineCount = canvas_mineCount.getContext("2d");
@@ -269,21 +263,32 @@ flagChange () {
             ctx_grid.drawImage(this.imageSwitch, s.x*25, s.y*25);
         }
     }
-    console.log("run!");
+    // console.log("run!");
     }
     },
     mounted() {
         this.$nextTick(() => {
             let mines = this.$mine;
         this.mine = mines.methods.createMine(9, 9, 10);
-        console.log("start draw", this.mine)
         this.grid = document.getElementById("grid")
         this.grid.addEventListener("click", this.timeBegin);
         this.grid.addEventListener("mousedown", this.mineDown);
         this.face = document.getElementById("face");
         this.face.addEventListener("mouseup", this.restart);
         this.imageSwitch = this.gfs[1];
+        Promise.all(
+            this.imagesload.map(img => {
+                return new Promise((resolve) => {
+                    img.onload = () => {
+                        this.isLoaded++;
+                        resolve();
+                    }
+            })
+        })).then(() => {
+            console.log(this.isLoaded)
             this.draw();
+        })
+            // this.draw();
         })
     }, 
     created() {
@@ -291,15 +296,17 @@ flagChange () {
         for(let i=0;i<4;i++){
             this.gfs[i]=new Image();
             this.gfs[i].src = this.gfss[i];
+            this.imagesload.push(this.gfs[i])
         }
         for(let i=0;i<10;i++){
             this.gfd[i]=new Image();
             this.gfd[i].src = this.gfdd[i];
+            this.imagesload.push(this.gfd[i])
         }
         for(let i=0;i<9;i++){
             this.gfb[i]=new Image();
             this.gfb[i].src = this.gfbb[i];
-            // console.log(this.gfb[i], i)
+            this.imagesload.push(this.gfb[i])
         }
         // this.draw();
     }
