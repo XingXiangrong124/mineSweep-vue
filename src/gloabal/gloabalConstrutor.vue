@@ -22,6 +22,7 @@ function Mine (tr, td, mineCount) {
 
 Mine.prototype.randomNum = function () {
     let createSquare = new Array(this.tr * this.td);
+    console.log(createSquare, "createSquare")
     for (let i = 0; i < createSquare.length; i++) {
         createSquare[i] = i;
     }

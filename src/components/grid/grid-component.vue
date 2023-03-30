@@ -294,19 +294,20 @@ flagChange () {
         for(let i=0;i<4;i++){
             this.gfs[i]=new Image();
             this.gfs[i].src = this.gfss[i];
-            this.imagesload.push(this.gfs[i])
+            // this.imagesload.push(this.gfs[i])
         }
         for(let i=0;i<10;i++){
             this.gfd[i]=new Image();
             this.gfd[i].src = this.gfdd[i];
-            this.imagesload.push(this.gfd[i])
+            // this.imagesload.push(this.gfd[i])
         }
         for(let i=0;i<9;i++){
             this.gfb[i]=new Image();
             this.gfb[i].src = this.gfbb[i];
-            this.imagesload.push(this.gfb[i])
+            // this.imagesload.push(this.gfb[i])
         }
         // this.draw();
+        this.imagesload.push(...this.gfs.concat(this.gfb, this.gfd));
     }
     }
 }
