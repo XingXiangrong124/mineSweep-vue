@@ -13,8 +13,6 @@
 </template>
 
 <script>
-// import info from '../../gloabal/gloabal_detailInfo.js';
-// import ggrid from './../grid/grid-component.vue';
 import gridComponent from './../grid/grid-component.vue';
 // import {inject} from 'vue'
 // const $mine = inject('$mine')
@@ -28,7 +26,6 @@ export default {
     },
     methods: {
     draw() {
-        // console.log( this.$refs.gc)
         this.$refs.gc.draw();
     },
     restart() {
@@ -36,52 +33,25 @@ export default {
     },
     level(l) {
     let SW = document.body.clientWidth;
-    // let game = document.getElementsByClassName("game");
-    // let cell = document.getElementsByClassName("cell");
-    // let grid = document.getElementById("grid");
     
     if (l === 1) {
         this.mine.tr = 9;
         this.mine.td = 9;
         this.mine.mineCount = 10;
-        // game[0].style.width = '229px';
-        // game[0].style.height = '268px';
-        // cell[0].style.width = '225px';
-        // cell[0].style.height = '225px';
-        // grid.width = "225";
-        // grid.height = "225";
     } else if (l === 2) {
         this.mine.tr = 16;
         this.mine.td = 16;
         this.mine.mineCount = 40;
-        // game[0].style.width = '404px';
-        // game[0].style.height = '444px';
-        // cell[0].style.width = '400px';
-        // cell[0].style.height = '400px';
-        // grid.width = "400";
-        // grid.height = "400";
     } else if (l === 3) {
         //console.log(SW, SH);
         if (SW >= 755) {
             this.mine.tr = 30;
             this.mine.td = 16;
             this.mine.mineCount = 99;
-            // game[0].style.width = '754px';
-            // game[0].style.height = '444px';
-            // cell[0].style.width = '750px';
-            // cell[0].style.height = '400px';
-            // grid.width = "750";
-            // grid.height = "400";
         } else {
             this.mine.tr = 16;
             this.mine.td = 30;
             this.mine.mineCount = 99;
-            // game[0].style.width = '404px';
-            // game[0].style.height = '794px';
-            // cell[0].style.width = '400px';
-            // cell[0].style.height = '750px';
-            // grid.width = "400";
-            // grid.height = "750";
         }
     } else if (l === 4) {
         let M;
@@ -97,12 +67,6 @@ export default {
         this.mine.tr = X;
         this.mine.td = Y;
         this.mine.mineCount = M;
-        // game[0].style.width = `${X*25+4}px`;
-        // game[0].style.height = `${Y*25+44}px`;
-        // cell[0].style.width = `${X*25}px`;
-        // cell[0].style.height = `${Y*25}px`;
-        // grid.width = `${X*25}`;
-        // grid.height = `${Y*25}`;
     }
     // this.width = grid.width;
     // this.height = grid.height;

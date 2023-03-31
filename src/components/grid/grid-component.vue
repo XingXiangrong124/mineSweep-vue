@@ -1,8 +1,7 @@
 <template>
     <div>
-    <!-- <wordComponent></wordComponent> -->
     <div class="table">
-        <div class="game">
+        <div class="game" ref="game">
                 <div class="title pad">
                     <span class="mc">
                         <canvas height="23px" id="mineCount"></canvas>
@@ -13,7 +12,7 @@
                     </span>
                 </div>
                 <div class="cell pad">
-                    <canvas width="225px" height="225px" id="grid"></canvas>
+                    <canvas width="225px" height="225px" id="grid" ></canvas>
                 </div>
             </div>
     </div>
@@ -23,6 +22,7 @@
 <script>
 
 import {inject} from 'vue'
+import mitt from 'mitt'
 
 export default {
     name: 'grid-component',
@@ -63,15 +63,13 @@ export default {
             gfd: [],
             gfs: [],
             imagesload: [],
-            isLoaded: 0
+            isLoaded: 0,
+            canvas_timeCount: null,
+            canvas_mineCount: null
         }
     }, 
-    // components: {
-    //     // wordComponent
-    // },
     methods: {
     draw() {
-    // const canvas_grid = document.getElementById("grid");
     const ctx_grid = this.grid.getContext("2d");
 
     if (this.mineChange) {
@@ -93,15 +91,15 @@ export default {
         }
     }
     
-    const canvas_mineCount = document.getElementById("mineCount");
-    const ctx_mineCount = canvas_mineCount.getContext("2d");
+    this.canvas_mineCount = this.$el.querySelector("#mineCount");
+    const ctx_mineCount = this.canvas_mineCount.getContext("2d");
     for (let i = 2; i >= 0; i--) {
         let index = mineCount % 10;
         mineCount = Math.floor(mineCount / 10);
         ctx_mineCount.drawImage(this.gfd[index], i*13, 0);
     }
-    const canvas_timeCount = document.getElementById("timeCount");
-    const ctx_timeCount = canvas_timeCount.getContext("2d");
+    this.canvas_timeCount = this.$el.querySelector("#timeCount");
+    const ctx_timeCount = this.canvas_timeCount.getContext("2d");
     for (let i = 0; i < 3; i++) {
         ctx_timeCount.drawImage(this.gfd[0], i*13, 0);
     }
@@ -109,8 +107,8 @@ export default {
     timeBegin () {
     //首次点击开始计时
         if (!this.isStart) {
-        const canvas_timeCount = document.getElementById("timeCount");
-        const ctx_timeCount = canvas_timeCount.getContext("2d");
+        // this.canvas_timeCount = document.getElementById("timeCount");
+        const ctx_timeCount = this.canvas_timeCount.getContext("2d");
         this.time++;
         let timeWrite = this.time;
             for (let i = 2; i >= 0; i--) {
@@ -131,11 +129,11 @@ export default {
     let x = Math.floor(e.offsetX/25);
     let y = Math.floor(e.offsetY/25);
     // console.log(`${x}和${y}`)
-    const canvas_grid = document.getElementById("grid");
-    const ctx_grid = canvas_grid.getContext("2d");
-    const face = document.getElementById("face");
-    const canvas_mineCount = document.getElementById("mineCount");
-    const ctx_mineCount = canvas_mineCount.getContext("2d");
+    // const canvas_grid = document.getElementById("grid");
+    const ctx_grid = this.grid.getContext("2d");
+    // const face = document.getElementById("face");
+    // const canvas_mineCount = document.getElementById("mineCount");
+    const ctx_mineCount = this.canvas_mineCount.getContext("2d");
     // ctx_grid.clearRect(x*25, y*25, 25, 25);
     // console.log(mine.squares);
     if (this.mine.squares[y][x].isFlag === true) {
@@ -180,8 +178,8 @@ export default {
                     }
                 }
             }
-            face.src = this.gif[2];
-            console.log(this.gif[2], "gif")
+            this.face.src = this.gif[2];
+            // console.log(this.gif[2], "gif")
             //让时钟停止
             clearTimeout(this.t);
             //应对一开始就踩到雷的问题，没有它会一直计时
@@ -211,10 +209,9 @@ export default {
     //游戏是否结束判断
     console.log(this.mine.fix.length, "fix");
     console.log(this.mine.n, "剩余");
-    // console.log(mine.squares[y][x]);
-        // if (mine.fix.length === mine.mineCount || (mine.tr*mine.td-mine.n) === mine.mineCount) {
+        
         if ((this.mine.tr*this.mine.td-this.mine.n) === this.mine.mineCount) {
-            face.src = this.gif[1];
+            this.face.src = this.gif[1];
             clearTimeout(this.t);
             //没标小红旗的标小红旗
             for (let pp of this.mine.minePosition) { 
@@ -265,13 +262,14 @@ flagChange () {
     }
     },
     mounted() {
+        const emitter = mitt();
         this.$nextTick(() => {
-            let mines = this.$mine;
+        let mines = this.$mine;
         this.mine = mines.methods.createMine(9, 9, 10);
-        this.grid = document.getElementById("grid")
-        this.grid.addEventListener("click", this.timeBegin);
+        this.grid = this.$el.querySelector("#grid")
+        emitter.on("click", this.timeBegin);
         this.grid.addEventListener("mousedown", this.mineDown);
-        this.face = document.getElementById("face");
+        this.face = this.$el.querySelector("#face");
         this.face.addEventListener("mouseup", this.restart);
         this.imageSwitch = this.gfs[1];
         Promise.all(
