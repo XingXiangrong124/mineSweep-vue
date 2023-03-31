@@ -4,16 +4,16 @@
     <div class="table">
         <div class="game" ref="game">
                 <div class="title pad">
-                    <span class="mc" ref="mc">
-                        <canvas height="23px" id="mineCount" ref="mineCount"></canvas>
+                    <span class="mc" >
+                        <canvas height="23px" id="mineCount"></canvas>
                     </span>
-                    <img class="facePad" id="face" ref="face" src="data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AL29vQAAACH5BAAHAP8ALAAAAAAVABUAAAJAlI+py50AoUMwWCsduBy33XXAAoaiUlZY+nBq8MKUSY9HSbtzft4X/vu1MCLhcBXRoXgyBlD5AWYmgsiUis0yCgA7" alt="restart">
+                    <img class="facePad" id="face" src="data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AL29vQAAACH5BAAHAP8ALAAAAAAVABUAAAJAlI+py50AoUMwWCsduBy33XXAAoaiUlZY+nBq8MKUSY9HSbtzft4X/vu1MCLhcBXRoXgyBlD5AWYmgsiUis0yCgA7" alt="restart">
                     <span class="tc">
-                        <canvas height="23px" width="39px" id="timeCount" ref="timeCount"></canvas>
+                        <canvas height="23px" width="39px" id="timeCount" ></canvas>
                     </span>
                 </div>
-                <div class="cell pad" ref="cell">
-                    <canvas width="225px" height="225px" id="grid" ref="grid"></canvas>
+                <div class="cell pad" >
+                    <canvas width="225px" height="225px" id="grid"></canvas>
                 </div>
             </div>
     </div>

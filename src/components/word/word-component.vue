@@ -70,19 +70,19 @@ export default {
 },
     
     setShape(tr, td) {
-        // let game = document.getElementsByClassName("game");
-        // let cell = document.getElementsByClassName("cell");
-        // let grid = document.getElementById("grid");
-        let game = this.$refs.gc.$refs.game;
-        let cell = this.$refs.gc.$refs.cell;
-        let grid = this.$refs.gc.$refs.grid;
-        console.log(grid, "grid");
+        let game = document.getElementsByClassName("game");
+        let cell = document.getElementsByClassName("cell");
+        let grid = document.getElementById("grid");
+        // let game = this.$refs.gc.$refs.game;
+        // let cell = this.$refs.gc.$refs.cell;
+        // let grid = this.$refs.gc.$refs.grid;
+        // console.log(grid, "grid");
         
 
-        game.style.width = `${tr*25+4}px`;
-        game.style.height = `${td*25+44}px`;
-        cell.style.width = `${tr*25}px`;
-        cell.style.height = `${td*25}px`;
+        game[0].style.width = `${tr*25+4}px`;
+        game[0].style.height = `${td*25+44}px`;
+        cell[0].style.width = `${tr*25}px`;
+        cell[0].style.height = `${td*25}px`;
         grid.width = `${tr*25}`;
         grid.height = `${td*25}`;
         this.width = grid.width;
