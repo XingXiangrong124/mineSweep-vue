@@ -8,7 +8,7 @@
                     </span>
                     <img class="facePad" id="face" src="data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AL29vQAAACH5BAAHAP8ALAAAAAAVABUAAAJAlI+py50AoUMwWCsduBy33XXAAoaiUlZY+nBq8MKUSY9HSbtzft4X/vu1MCLhcBXRoXgyBlD5AWYmgsiUis0yCgA7" alt="restart">
                     <span class="tc">
-                        <canvas height="23px" width="39px" id="timeCount" ></canvas>
+                        <canvas height="23px" width="39px" id="timeCount"></canvas>
                     </span>
                 </div>
                 <div class="cell pad">
@@ -23,7 +23,7 @@
 
 import {inject} from 'vue'
 import mitt from 'mitt'
-import { mapMutations } from 'vuex'
+// import { mapMutations } from 'vuex'
 
 export default {
     name: 'grid-component',
@@ -82,9 +82,9 @@ export default {
         }
     },
     methods: {
-        ...mapMutations([
-            'put'
-        ]),
+        // ...mapMutations([
+        //     'put'
+        // ]),
     draw() {
     const ctx_grid = this.grid.getContext("2d");
 
@@ -278,7 +278,7 @@ flagChange () {
         }
     }
     // console.log("run!");
-    }
+},
     },
     mounted() {
         const emitter = mitt();
