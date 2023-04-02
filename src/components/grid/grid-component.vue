@@ -8,7 +8,7 @@
                     </span>
                     <img class="facePad" id="face" src="data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AL29vQAAACH5BAAHAP8ALAAAAAAVABUAAAJAlI+py50AoUMwWCsduBy33XXAAoaiUlZY+nBq8MKUSY9HSbtzft4X/vu1MCLhcBXRoXgyBlD5AWYmgsiUis0yCgA7" alt="restart">
                     <span class="tc">
-                        <canvas height="23px" width="39px" id="timeCount"></canvas>
+                        <canvas height="23px" width="39px" id="timeCount" ></canvas>
                     </span>
                 </div>
                 <div class="cell pad">
@@ -23,6 +23,7 @@
 
 import {inject} from 'vue'
 import mitt from 'mitt'
+import { mapMutations } from 'vuex'
 
 export default {
     name: 'grid-component',
@@ -67,8 +68,23 @@ export default {
             canvas_timeCount: null,
             canvas_mineCount: null
         }
-    }, 
+    },
+    watch: {
+        mineChange: {
+            handler(newValue, oldValue) {
+                console.log('mineChange 对象发生变化：', newValue, oldValue);
+                if (oldValue !== undefined) {
+                this.restart();
+                console.log("watch restart");
+                }
+            },
+            deep: true
+        }
+    },
     methods: {
+        ...mapMutations([
+            'put'
+        ]),
     draw() {
     const ctx_grid = this.grid.getContext("2d");
 
@@ -116,7 +132,7 @@ export default {
                 timeWrite = Math.floor(timeWrite / 10);
                 ctx_timeCount.drawImage(this.gfd[index], i*13, 0);
             }
-        //console.log(time)
+        console.log(this.time)
             this.t = setTimeout(() => {
                 this.isStart = false;
                 this.timeBegin();
@@ -227,6 +243,9 @@ export default {
                 ctx_mineCount.drawImage(this.gfd[index], i*13, 0);
             }
             this.grid.removeEventListener("mousedown", this.mineDown);
+            //将记录导入成绩
+            // let levelSort = `${this.mine.tr}×${this.mine.td}${this.mine.mineCount}雷`
+            // this.put(levelSort, this.time)
         }
     },
     restart () {
@@ -311,7 +330,7 @@ flagChange () {
 }
 </script>
 
-<style scoped>
+<style>
 .table {
     /* height: 268px; */
     margin-top: 15px;

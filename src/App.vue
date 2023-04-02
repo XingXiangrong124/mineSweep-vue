@@ -33,11 +33,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .main {
   background: #f7f7f0;
   width: 100vw;
   height: 100vh;
   text-align: center;
+  margin: 0;
+  position: relative;
+}
+body {
+  margin: 0;
+  height: 100%;
+  background: #f7f7f0;
 }
 </style>

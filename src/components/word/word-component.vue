@@ -1,4 +1,5 @@
 <template>
+    <div class="together">
     <div class="word">
         <h3>网页扫雷游戏</h3>
             <div class="difficulty">
@@ -10,18 +11,22 @@
             </div>
     </div>
     <gridComponent ref="gc" :mineChange="this.mine" :height="this.height" :width="this.width"></gridComponent>
+    <div id="score">
+        <scoreComponent></scoreComponent>
+    </div>
+</div>
 </template>
 
 <script>
 import gridComponent from './../grid/grid-component.vue';
-// import {inject} from 'vue'
-// const $mine = inject('$mine')
+import scoreComponent from './../score/score-component.vue'
 export default {
     data() {
         return {
             mine: undefined,
             width: null,
-            height: null
+            height: null, 
+            scores: null
         }
     },
     methods: {
@@ -72,19 +77,24 @@ export default {
     // this.height = grid.height;
     // console.log(this.width, this.height,"w")
     this.setShape(this.mine.tr, this.mine.td)
-    this.mine.init();
-    this.draw()
+    // this.mine.init();
+    // this.draw()
     this.restart();
 },
     custom() {
-        this.mine.td = parseInt(prompt("请输入行数", 9));
-        this.mine.tr = parseInt(prompt("请输入列数", 9));
-        this.mine.mineCount = parseInt(prompt("请输入雷数", 10));
+        this.mine.td = parseInt(prompt("请输入行数", "15"));
+        this.mine.tr = parseInt(prompt("请输入列数", "15"));
+        this.mine.mineCount = parseInt(prompt("请输入雷数", "20"));
+        this.setShape(this.mine.tr, this.mine.td)
+        // this.mine.init();
+        // this.draw()
+        this.restart();
     },
     setShape(tr, td) {
         let game = document.getElementsByClassName("game");
         let cell = document.getElementsByClassName("cell");
         let grid = document.getElementById("grid");
+        this.scores = this.$el.querySelector("#score");
 
         game[0].style.width = `${tr*25+4}px`;
         game[0].style.height = `${td*25+44}px`;
@@ -94,14 +104,17 @@ export default {
         grid.height = `${td*25}`;
         this.width = grid.width;
         this.height = grid.height;
+        this.scores.style.marginTop = `${td*25+65}px`;
     }
     },
     components: {
         gridComponent,
+        scoreComponent
     },
     mounted() {
         let mines = this.$mine;
         this.mine = mines.methods.createMine(9, 9, 10);
+        
     }
 }
 
@@ -115,4 +128,24 @@ export default {
 .difficulty a {
     padding: 0 5px;
 }
+#score {
+    padding-top: 15px;
+    margin-top: 290px;
+    /* display: flex;
+    justify-self: center; */
+    width: 100%;
+    position: relative;
+
+}
+#score a {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
+/* .together {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+} */
 </style>
