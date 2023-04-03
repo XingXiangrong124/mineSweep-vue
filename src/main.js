@@ -1,11 +1,19 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import mine from './gloabal/gloabalConstrutor.vue'
+import store from './store'
 // import picData from './gloabal/gloabalData.vue'
+// import { createStore } from 'vuex'
+// import { store } from './vuex/store.js'
 
+// const store = createStore({
+//   state,
+//   mutations
+// })
 
+let app = createApp(App).use(store)
+// app.use(store)
 
-let app = createApp(App)
 app.provide('gif', ["data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AL29vQAAACH5BAAHAP8ALAAAAAAVABUAAAJAlI+py50AoUMwWCsduBy33XXAAoaiUlZY+nBq8MKUSY9HSbtzft4X/vu1MCLhcBXRoXgyBlD5AWYmgsiUis0yCgA7", 
 "data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AMDAwICAACH5BAAHAP8ALAAAAAAVABUAAAJHlI+py50AoUMwWCsduBy33XXAAoaiAkZqFYwUprZx+27xTR/swMoD/DKZXIaSkEMsXoytJQo58zyPOdIxSWJmJoIV9wueFAAAOw==", 
 "data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AMDAwAAAACH5BAAHAP8ALAAAAAAVABUAAAJDlI+py50AoUMwWCsduBy33XXAAm5gYHrPdWLs6p6parShSN36eNg6LbBFKhxejyV6wXwo4PGH+vyMDCKLqhlOttxuAQA7"

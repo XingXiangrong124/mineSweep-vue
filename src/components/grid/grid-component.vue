@@ -8,7 +8,7 @@
                     </span>
                     <img class="facePad" id="face" src="data:img/gif;base64,R0lGODlhFQAVAJEAAAAAAP//AL29vQAAACH5BAAHAP8ALAAAAAAVABUAAAJAlI+py50AoUMwWCsduBy33XXAAoaiUlZY+nBq8MKUSY9HSbtzft4X/vu1MCLhcBXRoXgyBlD5AWYmgsiUis0yCgA7" alt="restart">
                     <span class="tc">
-                        <canvas height="23px" width="39px" id="timeCount"></canvas>
+                        <canvas height="23px" width="39px" id="timeCount" ></canvas>
                     </span>
                 </div>
                 <div class="cell pad">
@@ -22,9 +22,8 @@
 <script>
 
 import {inject} from 'vue'
-import mitt from 'mitt'
-// import { mapMutations } from 'vuex'
-
+import { mapMutations } from 'vuex'
+import { mapState } from "vuex";
 export default {
     name: 'grid-component',
     props: {
@@ -37,6 +36,9 @@ export default {
         width: {
             type: Number
         }
+    },
+    computed: {
+        ...mapState(['gamePerforment'])
     },
     setup() {
             const gif = inject('gif');
@@ -82,9 +84,9 @@ export default {
         }
     },
     methods: {
-        // ...mapMutations([
-        //     'put'
-        // ]),
+        ...mapMutations([
+            'put'
+        ]),
     draw() {
     const ctx_grid = this.grid.getContext("2d");
 
@@ -122,6 +124,7 @@ export default {
     },
     timeBegin () {
     //首次点击开始计时
+    // console.log(this.isStart, "time")
         if (!this.isStart) {
         // this.canvas_timeCount = document.getElementById("timeCount");
         const ctx_timeCount = this.canvas_timeCount.getContext("2d");
@@ -132,7 +135,7 @@ export default {
                 timeWrite = Math.floor(timeWrite / 10);
                 ctx_timeCount.drawImage(this.gfd[index], i*13, 0);
             }
-        console.log(this.time)
+        // console.log(this.time, "time")
             this.t = setTimeout(() => {
                 this.isStart = false;
                 this.timeBegin();
@@ -245,7 +248,7 @@ export default {
             this.grid.removeEventListener("mousedown", this.mineDown);
             //将记录导入成绩
             // let levelSort = `${this.mine.tr}×${this.mine.td}${this.mine.mineCount}雷`
-            // this.put(levelSort, this.time)
+            this.$store.commit('put', { gameSort: `${this.mine.tr}×${this.mine.td}大小${this.mine.mineCount}雷`, gameTime: `${this.time}` })
         }
     },
     restart () {
@@ -281,12 +284,12 @@ flagChange () {
 },
     },
     mounted() {
-        const emitter = mitt();
+        
         this.$nextTick(() => {
         let mines = this.$mine;
         this.mine = mines.methods.createMine(9, 9, 10);
         this.grid = this.$el.querySelector("#grid")
-        emitter.on("click", this.timeBegin);
+        this.grid.addEventListener("click", this.timeBegin);
         this.grid.addEventListener("mousedown", this.mineDown);
         this.face = this.$el.querySelector("#face");
         this.face.addEventListener("mouseup", this.restart);

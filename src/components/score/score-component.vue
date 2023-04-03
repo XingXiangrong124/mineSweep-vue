@@ -16,15 +16,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="score in highsorces" :key="score.game">
+                <tr v-for="highscore in highscores" :key="highscore.gameName">
                     <td>
-                        {{ score.game }}
+                        {{ highscore.gameName }}
                     </td>
                     <td>
-                        {{ score.score }}
+                        {{ highscore.scores }}s
                     </td>
                     <td>
-                        {{ score.time }}
+                        {{ highscore.time }}
                     </td>
                 </tr>
             </tbody>
@@ -39,11 +39,7 @@ export default {
     name: 'scoreComponent',
     data() {
         return {
-            highsorces: [{
-                game: "9×9 10mine",
-                score: "11'1",
-                time: "2023/4/2"
-            }]
+            highscores: []
         }
     },
     computed: {
@@ -53,37 +49,52 @@ export default {
         '$store.state.gamePerforment': {
             handler (newValue, oldValue) {
             console.log('gamePerforment 对象发生变化：', newValue, oldValue)
+            this.saveHighscore(newValue.sort, newValue.time);
         },
         deep: true
         }
     },
     methods: {
-        localHighsorce() {
+        loadHighscore() {
             const hs = localStorage.getItem('highscores')
+            console.log(hs, "hs");
             if (hs) {
-                this.highsorces = JSON.parse(hs);
+                this.highscores = JSON.parse(hs);
             }
         },
-        saveHighscore(gameName, score) {
+        saveHighscore(gameNa, score) {
             // 从本地存储加载历史最佳成绩记录
-            this.loadHighscores()
+            this.loadHighscore()
 
-            const timestamp = new Date().toISOString()
-
+            const timestamp = new Date().toLocaleDateString()
+            console.log(this.highscores, "highscores")
             // 检查游戏记录是否已存在
-            if (this.highscores[gameName]) {
+            let existingHighscoreIndex = this.highscores.findIndex(
+                highscore => highscore.gameName === gameNa
+            )
+            console.log(existingHighscoreIndex, "index");
+            if (existingHighscoreIndex !== -1) {
             // 如果新分数比现有分数高，则更新分数
-                if (score > this.highscores[gameName].score) {
-                    this.highscores[gameName].score = score
-                    this.highscores[gameName].timestamp = timestamp
+                if (parseInt(score) < parseInt(this.highscores[existingHighscoreIndex].scores)) {
+                    this.highscores[existingHighscoreIndex].scores = score
+                    this.highscores[existingHighscoreIndex].time = timestamp
+                    console.log("run")
                 }
+                
             } else {
             // 如果游戏记录不存在，则创建一个新的记录
-                this.highscores[gameName] = { score, timestamp }
+                this.highscores.push( { gameName: gameNa, scores: score, time: timestamp } )
             }
             // 将记录保存到本地存储中
             localStorage.setItem('highscores', JSON.stringify(this.highscores))
+            console.log(localStorage);
+            console.log(JSON.stringify(this.highscores), "jsonhighscores")
+            console.log(this.highscores[0], "highscores[0]")
         }
+    },
+    mounted() {
+        //console.log(this.gamePerforment, "gamePerforment")
+        this.loadHighscore()
     }
 }
 
@@ -93,6 +104,9 @@ export default {
     position: absolute;
     left: 50%;
     transform: translate(-50%);
+}
+table th {
+    width: 100px;
 }
 
 </style>
